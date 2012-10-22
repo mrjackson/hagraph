@@ -113,45 +113,18 @@ var line = $.jqplot('chart1', [line6], {
         }
     }
 });
-chart2 = $.jqplot('chart2', [line6], {
-	// Only animate if we're not using excanvas (not in IE 7 or IE 8)..
-	animate: !$.jqplot.use_excanvas,
-	seriesDefaults:{
-		renderer:$.jqplot.BarRenderer,
-		pointLabels: {
-			show: true,
-			formatString: '%d\%',
-		}
-	},
-	axesDefaults: {
-		labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
-		sortData: true,
-		labelOptions: {
-			fontSize: '13pt'
-		}
-	},
-	legend:{
-		renderer: $.jqplot.EnhancedLegendRenderer,
-		show:true,
-		labels:['Percent in heating mode per day'],
-		rendererOptions:{
-			numberRows: 1
-		},
-		placement: 'outsideGrid',
-		location: 's'
-	},
-	axes: {
-		xaxis: {
-			label: 'Date',
-			renderer: $.jqplot.CategoryAxisRenderer,
-		}
-	},
-	highlighter: { show: false }
-        });
 
+<?php
+if ((include 'include/boiler-runtime.js') !== 1)
+{
+    die('Include failed.');
+}
+?>
 
 })
 </script>
+
+
 </head>
 
 <body>
@@ -160,7 +133,7 @@ chart2 = $.jqplot('chart2', [line6], {
         echo "<BR>";
 ?>
 <div id="chart1" style="height:400px;width:1200px; "></div>
-<div id="chart2" style="height:400px;width:1200px; "></div>
+<div id="chart6" style="height:400px;width:1200px; "></div>
 
 <?php
         $time = microtime();

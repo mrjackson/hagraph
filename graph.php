@@ -80,7 +80,7 @@ print("var line5=[" . implode(",",$temp) . "]\n");
 unset($query);
 unset($temp);
 //line6 Boiler Run Percentage
-$query = "SELECT datetime, temperature FROM data WHERE sensorid = 12 order by rowid desc limit 14";
+$query = "SELECT * FROM (SELECT datetime, temperature FROM data WHERE sensorid = 12 ORDER BY rowid DESC LIMIT 14) ORDER BY datetime";
 foreach ($dbh->query($query) as $row)
 {
         $temp[] = "['" . $row["datetime"] . "'," . $row["temperature"] * 100 . "]"; 
@@ -257,30 +257,12 @@ var line = $.jqplot('chart3', [line2, line1, line5], {
         }            
     }
 });
-chart6 = $.jqplot('chart6', [line6], {
-        // Only animate if we're not using excanvas (not in IE 7 or IE 8)..
-        animate: !$.jqplot.use_excanvas,
-        seriesDefaults:{
-                renderer:$.jqplot.BarRenderer,
-		pointLabels: {
-			show: true,
-			formatString: '%d\%',
-		}
-	},
-        axesDefaults: {        
-                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
-                labelOptions: {
-                        fontSize: '13pt'
-                }
-        },
-        axes: {           
-                xaxis: {
-                        renderer: $.jqplot.CategoryAxisRenderer,
-                }
-        },         
-        highlighter: { show: false }
-        });
-
+<?php
+if ((include 'include/boiler-runtime.js') !== 1)
+{
+	die('Include failed.');
+}
+?>
 })
 </script>
 </head>
@@ -293,7 +275,7 @@ chart6 = $.jqplot('chart6', [line6], {
 <div id="chart1" style="height:400px;width:1200px; "></div>
 <div id="chart3" style="height:400px;width:1200px; "></div>
 <div id="chart2" style="height:600px;width:1200px; "></div>
-<div id="chart6" style="height:600px;width:1200px; "></div>
+<div id="chart6" style="height:400px;width:1200px; "></div>
 
 <?php
         $time = microtime();
