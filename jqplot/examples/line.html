@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+ <head>
+     
+  <link rel="stylesheet" type="text/css" href="examples.css" />
+  <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="../excanvas.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="../jquery.jqplot.min.css" />
+    <script src="../jquery.min.js" type="text/javascript"></script>
+    <script language="javascript" type="text/javascript" src="../jquery.jqplot.min.js"></script>
+
+    <script language="javascript" type="text/javascript" src="../plugins/jqplot.canvasTextRenderer.min.js"></script>
+    <script language="javascript" type="text/javascript" src="../plugins/jqplot.canvasAxisTickRenderer.min.js"></script>
+    <script language="javascript" type="text/javascript" src="../plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
+    <script language="javascript" type="text/javascript" src="../plugins/jqplot.highlighter.min.js"></script>
+    <script language="javascript" type="text/javascript" src="../plugins/jqplot.canvasOverlay.min.js"></script>
+    <script language="javascript" type="text/javascript" src="../plugins/jqplot.cursor.min.js"></script>
+    <script language="javascript" type="text/javascript" src="../plugins/jqplot.pointLabels.min.js"></script>
+    <script language="javascript" type="text/javascript" src="../plugins/jqplot.pieRenderer.min.js"></script>
+    <script language="javascript" type="text/javascript" src="../plugins/jqplot.barRenderer.min.js"></script>
+    <script language="javascript" type="text/javascript" src="../plugins/jqplot.dateAxisRenderer.min.js"></script>
+    <script language="javascript" type="text/javascript" src="../plugins/jqplot.categoryAxisRenderer.min.js"></script>
+
+    <script type="text/javascript">
+
+
+         interval = 1500;
+         niters = 0;
+         maxIterations = 200;
+         GraphUpdate = null;
+
+         function UpdateGraph() {
+             StopGraphLoop();
+             GraphUpdate = setInterval(runUpdate, interval);
+         }
+         
+         
+         function runUpdate() {
+             if (niters < maxIterations) {
+                 window.location.reload(true);
+                 niters++;
+             }
+             else {
+                 StopGraphLoop();
+             }
+         }
+
+         function StopGraphLoop() {
+
+             clearInterval(GraphUpdate);
+         }
+
+
+        $(document).ready(function(){
+            
+            var linedata = [];
+            var start = 1301630400000;
+            for (var i=0; i< 30; i++) {
+                linedata.push([start + i*1000*60*60*24, (Math.random() - 0.4)*(30+i) + 100]);
+            }
+
+            var line = $.jqplot('chart1', [linedata], {
+                title: 'Unique Visitors by Day',
+                cursor: { show: true },
+                highlighter: { show: true },
+                seriesDefaults: { pointLabels: { show: true }},
+                axesDefaults: {
+                    labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                    labelOptions: {
+                        fontSize: '13pt'
+                    }
+                },
+
+                axes: {
+                    xaxis: {
+                        label: 'Date',
+                        renderer: $.jqplot.DateAxisRenderer,
+                        min: '03/30/2011 00:00:00',
+                        tickInterval: '3 days',
+                        tickOptions: { formatString: '%b %#d' }
+                    },
+                    yaxis: {
+                        label: 'Unique Visitors' 
+                    }
+                }
+            });
+
+            // UpdateGraph();
+
+        });
+
+    </script>
+
+ </head>
+ <body>
+    <?php include "topbanner.inc"; ?>
+    <div class="example-content">
+    <?php include "nav.inc"; ?>
+
+ <div id="chart1" style="height:300px; width:600px;"></div>
+ <div id="chart2" style="height:340px; width:500px;"></div>
+ <div id="chart3" style="height:340px; width:500px;"></div>
+
+ 
+  </div>
+</body>
+ </html>
