@@ -35,7 +35,7 @@
  
 $dbh = new PDO('sqlite:/home/mrjackson/data/temperature.sqlite');
 //line6 Boiler Run Percentage
-$query = "SELECT * FROM (SELECT datetime, temperature FROM data WHERE sensorid = 12 ORDER BY rowid DESC LIMIT 14) ORDER BY datetime";
+$query = "SELECT * FROM (SELECT datetime, temperature FROM data WHERE sensorid = 12 ORDER BY rowid DESC LIMIT 7) ORDER BY datetime";
 //$query = "SELECT datetime, temperature FROM data WHERE sensorid = 12 order by rowid desc limit 14";
 //$query = array_reverse($query, true);
 foreach ($dbh->query($query) as $row)
@@ -45,6 +45,15 @@ foreach ($dbh->query($query) as $row)
 print("var line6=[" . implode(",",$temp) . "]\n");
 unset($query);
 unset($temp); 
+//line7 Daily temperature average
+$query = "SELECT * FROM (SELECT substr(datetime,0,11) as datetime,avg(temperature) as temperature FROM data WHERE sensorid = 15 group by substr(datetime,0,11) order by rowid desc limit 7) ORDER BY datetime";
+foreach ($dbh->query($query) as $row)
+{    
+        $temp[] = "['" . $row["datetime"] . "'," . $row["temperature"] . "]"; 
+}
+print("var line7=[" . implode(",",$temp) . "]\n");
+unset($query);     
+unset($temp);
 
 
 unset($dbh);
@@ -120,6 +129,13 @@ if ((include 'include/boiler-runtime.js') !== 1)
     die('Include failed.');
 }
 ?>
+<?php
+if ((include 'include/temp-avg-outside.js') !== 1)
+{
+    die('Include failed.');
+}
+?>
+
 
 })
 </script>
@@ -134,7 +150,7 @@ if ((include 'include/boiler-runtime.js') !== 1)
 ?>
 <div id="chart1" style="height:400px;width:1200px; "></div>
 <div id="chart6" style="height:400px;width:1200px; "></div>
-
+<div id="chart7" style="height:400px;width:1200px; "></div>
 <?php
         $time = microtime();
         $time = explode(" ", $time);

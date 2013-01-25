@@ -89,7 +89,7 @@ print("var line6=[" . implode(",",$temp) . "]\n");
 unset($query);     
 unset($temp);
 //line7 Daily temperature average
-$query = "SELECT substr(datetime,0,11) as datetime,avg(temperature) as temperature FROM data WHERE sensorid = 15 group by substr(datetime,0,11) order by rowid desc limit 14";
+$query = "SELECT * FROM (SELECT substr(datetime,0,11) as datetime,avg(temperature) as temperature FROM data WHERE sensorid = 15 group by substr(datetime,0,11) order by rowid desc limit 14) ORDER BY datetime";
 foreach ($dbh->query($query) as $row)
 {
         $temp[] = "['" . $row["datetime"] . "'," . $row["temperature"] . "]"; 
@@ -272,6 +272,13 @@ if ((include 'include/boiler-runtime.js') !== 1)
 	die('Include failed.');
 }
 ?>
+<?php        
+if ((include 'include/temp-avg-outside.js') !== 1)
+{
+    die('Include failed.');
+}     
+?>
+
 })
 </script>
 </head>
@@ -285,7 +292,7 @@ if ((include 'include/boiler-runtime.js') !== 1)
 <div id="chart3" style="height:400px;width:1200px; "></div>
 <div id="chart2" style="height:600px;width:1200px; "></div>
 <div id="chart6" style="height:400px;width:1200px; "></div>
-
+<div id="chart7" style="height:400px;width:1200px; "></div>
 <?php
         $time = microtime();
         $time = explode(" ", $time);
