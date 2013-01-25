@@ -88,6 +88,15 @@ foreach ($dbh->query($query) as $row)
 print("var line6=[" . implode(",",$temp) . "]\n");               
 unset($query);     
 unset($temp);
+//line7 Daily temperature average
+$query = "SELECT substr(datetime,0,11),avg(temperature) FROM data WHERE sensorid = 15 group by substr(datetime,0,11) order by rowid desc limit 14";
+foreach ($dbh->query($query) as $row)
+{
+        $temp[] = "['" . $row["datetime"] . "'," . $row["temperature"] . "]"; 
+}
+print("var line7=[" . implode(",",$temp) . "]\n");
+unset($query);     
+unset($temp);
 
 unset($dbh);
  
