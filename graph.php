@@ -26,10 +26,6 @@
 <script language="javascript" type="text/javascript" src="jqplot/plugins/jqplot.highlighter.min.js"></script>
 <link rel="stylesheet" type="text/css" href="jqplot/jquery.jqplot.css" />
 
-<?php
-  $dbh = new PDO('sqlite:/home/mrjackson/data/temperature.sqlite');
-?>
-
 <script type="text/javascript">
 <?php
  
